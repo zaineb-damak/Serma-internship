@@ -5,7 +5,7 @@ from Connected_Devices import *
 
 #returns global station number corresponding to the given device id
 def getGSNumber(phone_id):
-    f = open('./resources/GlobalStation.json')
+    f = open('./application/resources/GlobalStation.json')
     data = json.load(f)
     for i in data:
          if(i['DeviceID'] == phone_id):
@@ -15,7 +15,7 @@ def getGSNumber(phone_id):
 
 #returns global station number corresponding to the given device name
 def getGSNumberByName(phone_name):
-    f = open('./resources/GlobalStation.json')
+    f = open('./application/resources/GlobalStation.json')
     data = json.load(f)
     for i in data:
         if(i['DeviceName'] == phone_name):
@@ -24,7 +24,7 @@ def getGSNumberByName(phone_name):
 
 #returns global station device name corresponding to the given device id
 def getGSName(phone_id):
-    f = open('./resources/GlobalStation.json')
+    f = open('./application/resources/GlobalStation.json')
     data = json.load(f)
     for i in data:
             if(i['DeviceID'] == phone_id):
@@ -33,7 +33,7 @@ def getGSName(phone_id):
 
 #returns a list of device names in global station 
 def deviceNames():
-    f = open('./resources/GlobalStation.json')
+    f = open('./application/resources/GlobalStation.json')
     data = json.load(f)
     names=[]
     for i in data:
@@ -148,7 +148,7 @@ def executionPlan(execution_plan_file_path, idList):
     
     for i in range(0,len(testcases)):
         try:
-            updateTestCase('./resources/'+testcases[i], idList,testcases[i]+'1' )
+            updateTestCase('./application/resources/'+testcases[i], idList,testcases[i]+'1' )
             pass
         except FileNotFoundError:
             pass
@@ -160,7 +160,7 @@ def executionPlan(execution_plan_file_path, idList):
 
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
-updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample')
+#updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample')
 
 #executionPlan('./resources/CAN.xlsx',listID)
 #print(getTestCases('./resources/CAN.xlsx'))
