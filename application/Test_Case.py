@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import json
 from openpyxl import load_workbook
@@ -41,13 +42,12 @@ def deviceNames():
     return names
 
 #saves the changes in a new excel file
-def newExcel(wb, row, column,data,new_file):
+def newExcel(wb, row, column, data, new_file, save_path):
     ws = wb.active
     ws.cell(row=row, column=column+1).value = data
-    wb.save(filename = new_file +'.xlsx')
+    wb.save(filename = save_path+'/'+new_file +'.xlsx')
 
-
-def updateTestCase(file_path,IDList,new_file):
+def updateTestCase(file_path, IDList, new_file, save_file):
     #create a new dataframe
     df = pd.read_excel(file_path, header=56)
     #empty list linking the old phone number to the new phone number
@@ -128,7 +128,7 @@ def updateTestCase(file_path,IDList,new_file):
     #saving the changes in a new excel file
     wb = load_workbook(file_path)
     for j in range (0,len(excel_row)):
-        newExcel(wb, excel_row[j] ,column,df.loc[excel_row[j]-58,'Action Field 3'], new_file)
+        newExcel(wb, excel_row[j] ,column,df.loc[excel_row[j]-58,'Action Field 3'], new_file, save_file)
 
 
 
@@ -142,13 +142,13 @@ def getTestCases(execution_plan_file_path):
     return(file_name)
 
 #updates the test cases present in the execution plan
-def executionPlan(execution_plan_file_path, idList):
+def executionPlan(execution_plan_file_path, idList, save_file):
     testcases = []
     testcases = getTestCases(execution_plan_file_path)
     
     for i in range(0,len(testcases)):
         try:
-            updateTestCase('./application/resources/'+testcases[i], idList,testcases[i]+'1' )
+            updateTestCase('./application/resources/'+testcases[i], idList,testcases[i]+'1', save_file )
             pass
         except FileNotFoundError:
             pass
@@ -160,9 +160,9 @@ def executionPlan(execution_plan_file_path, idList):
 
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
-#updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample')
+#updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
 
-#executionPlan('./resources/CAN.xlsx',listID)
+#executionPlan('./resources/CAN.xlsx',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
 #print(getTestCases('./resources/CAN.xlsx'))
 
 
