@@ -24,11 +24,19 @@ def getGSNumberByName(phone_name):
     return('wrong id')
 
 #returns global station device name corresponding to the given device id
-def getGSName(phone_id):
+def getGSNameById(phone_id):
     f = open('./application/resources/GlobalStation.json')
     data = json.load(f)
     for i in data:
             if(i['DeviceID'] == phone_id):
+                return i['DeviceName']
+    return('wrong id')
+
+def getGSNameByNumber(phone_number):
+    f = open('./application/resources/GlobalStation.json')
+    data = json.load(f)
+    for i in data:
+            if(int(i['GSNumber']) == phone_number):
                 return i['DeviceName']
     return('wrong id')
 
@@ -77,7 +85,7 @@ def updateTestCase(file_path, IDList, new_file, save_file):
             #case 1: corresponding_phone is empty
             if (len(corresponding_phone) == 0 ):
                 #add element to list [old gsnumber, new gsnumber]
-                corresponding_phone.append([row['Action Field 3'],int(getGSNumber(id_list[0])),getGSName(id_list[0])])
+                corresponding_phone.append([row['Action Field 3'],int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
                 row['Action Field 3'] = int(getGSNumber(id_list[0]))
                 df.loc[index,'Action Field 3']=row['Action Field 3'] 
                 id_list.pop(0)
@@ -98,7 +106,7 @@ def updateTestCase(file_path, IDList, new_file, save_file):
                     df.loc[index,'Action Field 3'] = row['Action Field 3'] 
                 #case 3: phone number doesn't exist in corresponding_phone
                 else:
-                    corresponding_phone.append([row['Action Field 3'],int(getGSNumber(id_list[0])),getGSName(id_list[0])])
+                    corresponding_phone.append([row['Action Field 3'],int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
                     row['Action Field 3'] = getGSNumber(id_list[0])
                     df.loc[index,'Action Field 3']  = row['Action Field 3'] 
                     id_list.pop(0)
@@ -119,12 +127,12 @@ def updateTestCase(file_path, IDList, new_file, save_file):
                 row['Action Field 3'] = corresponding_phone[l][2]
                 df.loc[index,'Action Field 3']  = row['Action Field 3']
             if exists == False:
-                corresponding_phone.append([int(old),int(getGSNumber(id_list[0])),getGSName(id_list[0])])
-                row['Action Field 3'] = getGSName(id_list[0])
+                corresponding_phone.append([int(old),int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
+                row['Action Field 3'] = getGSNameById(id_list[0])
                 df.loc[index,'Action Field 3']  = row['Action Field 3']
                 id_list.pop(0)
 
-        print(row['Action Field 3'])
+        #print(row['Action Field 3'])
     getChanges()
    
     #saving the changes in a new excel file
@@ -162,8 +170,10 @@ def getChanges():
     old=[]
     new=[]
     for ele in corresponding_phone:
-        old.append(ele[0])
-        new.append(ele[1])
+        print(ele[0])
+        print(type(ele[1]))
+        old.append(getGSNameByNumber(ele[0])) 
+        new.append(getGSNameByNumber(ele[1]))
         print(old, new)
 
 
@@ -171,7 +181,7 @@ def getChanges():
 
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
-updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
+updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case1.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
 
 #executionPlan('./application/resources/CAN.xlsx',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
 #print(getTestCases('./resources/CAN.xlsx'))
