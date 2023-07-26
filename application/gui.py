@@ -26,13 +26,20 @@ def browseFiles():
 def choose_directory():
     global directory
     directory = filedialog.askdirectory()
-    changeButton1 = ctk.CTkButton(master=root,text="Change test case",command=updateTestCaseArg)
+    changeButton1 = ctk.CTkButton(master=root,text="Select test case",command=updateTestCaseArg)
     changeButton1.grid(row=5, column=0,columnspan=2, padx=20,pady=20, sticky="ew")
 
-    changeButton2 = ctk.CTkButton(master=root,text="Change execution plan",command=executionPlanArg)
+    changeButton2 = ctk.CTkButton(master=root,text="Select execution plan",command=executionPlanArg)
     changeButton2.grid(row=6, column=0,columnspan=2, padx=20,pady=20, sticky="ew")
 
-def message():
+def choose_directory2():
+    global directory2
+    directory2 = filedialog.askdirectory()
+    if directory2:
+        executionPlan(file,directory2,"List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device",directory)    
+        messageUpdated()
+
+def messageUpdated():
      global pop
      pop = Toplevel(root)
      pop.title("message")
@@ -43,19 +50,30 @@ def message():
      pop_label.grid(row=1,column=0)
      ok = ctk.CTkButton(pop_frame, text="see changes", command=getNewAndOld)
      ok.grid(row=2,column=0)
-     getNewAndOld
-     
+
+def messagePath():
+    pop = Toplevel(root)
+    pop.title("choose path")
+    pop.geometry("750x150")
+    pop_frame = Frame(pop)
+    pop_frame.pack(pady=5)
+    pop_label = ctk.CTkLabel(master=pop_frame,text="select the folder in which the test case files are saved")
+    pop_label.grid(row=1,column=0)
+    ok = ctk.CTkButton(pop_frame, text="browse", command=choose_directory2)
+    ok.grid(row=2,column=0)
     
+
 def updateTestCaseArg():
     user_input = simpledialog.askstring("Input", "Enter the name of the updated file")
     file = browseFiles()
     updateTestCase(file,"List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device",user_input,directory)
-    message()
+    messageUpdated()
 
 def executionPlanArg():
+    global file
     file = browseFiles()
-    executionPlan(file,"List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device",directory)    
-    message()
+    messagePath()
+    
 
 def getNewAndOld():
     global pop

@@ -151,7 +151,8 @@ def getTestCases(execution_plan_file_path):
     return(file_name)
 
 #updates the test cases present in the execution plan
-def executionPlan(execution_plan_file_path, idList, save_file):
+def executionPlan(execution_plan_file_path, test_case_path,idList, save_file):
+    print(execution_plan_file_path)
     testcases = []
     testcases = getTestCases(execution_plan_file_path)
     i = 0
@@ -160,7 +161,7 @@ def executionPlan(execution_plan_file_path, idList, save_file):
             testName = []
             testName = testcases
             testName[i] = os.path.splitext(test)[0]
-            updateTestCase('./application/resources/'+test, idList,testName[i]+'_updated', save_file )
+            updateTestCase(test_case_path+'/'+test, idList,testName[i]+'_updated', save_file )
             i = i+1
             pass
         except FileNotFoundError:
@@ -185,7 +186,6 @@ def getChanges():
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
 #updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
-
 #executionPlan('./application/resources/CAN.xlsx',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
 #print(getTestCases('./resources/CAN.xlsx'))
 
