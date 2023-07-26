@@ -41,13 +41,15 @@ def message():
      pop_frame.pack(pady=5)
      pop_label = ctk.CTkLabel(master=pop_frame,text="file updated successfully")
      pop_label.grid(row=1,column=0)
-     ok = ctk.CTkButton(pop_frame, text="ok", command=pop.destroy)
+     ok = ctk.CTkButton(pop_frame, text="see changes", command=getNewAndOld)
      ok.grid(row=2,column=0)
+     getNewAndOld
      
     
 def updateTestCaseArg():
+    user_input = simpledialog.askstring("Input", "Enter the name of the updated file")
     file = browseFiles()
-    updateTestCase(file,"List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device",'new',directory)
+    updateTestCase(file,"List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device",user_input,directory)
     message()
 
 def executionPlanArg():
@@ -56,10 +58,21 @@ def executionPlanArg():
     message()
 
 def getNewAndOld():
-    for ele in corresponding_phone:
-        old = ele[0]
-        new = ele[1]
-        print(old, new)
+    global pop
+    pop = Toplevel(root)
+    pop.title("message")
+    pop.geometry("500x350")
+    pop_frame = Frame(pop)
+    pop_frame.pack(pady=5)
+    changes = getChanges()
+     
+    for i, change in enumerate(changes):
+        pop_label = ctk.CTkLabel(master=pop_frame, text=change)
+        pop_label.grid(row=i, column=0, padx=5, pady=5)
+    
+    ok = ctk.CTkButton(pop_frame, text="ok", command=pop.destroy)
+    ok.grid(row=6,column=0)
+     
 
 root = ctk.CTk()
 

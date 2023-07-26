@@ -133,7 +133,7 @@ def updateTestCase(file_path, IDList, new_file, save_file):
                 id_list.pop(0)
 
         #print(row['Action Field 3'])
-    getChanges()
+    print(getChanges())
    
     #saving the changes in a new excel file
     wb = load_workbook(file_path)
@@ -167,21 +167,24 @@ def executionPlan(execution_plan_file_path, idList, save_file):
             pass
 
 def getChanges():
+    global message
     old=[]
     new=[]
+    message=[]
+    i = 0
     for ele in corresponding_phone:
-        print(ele[0])
-        print(type(ele[1]))
         old.append(getGSNameByNumber(ele[0])) 
         new.append(getGSNameByNumber(ele[1]))
-        print(old, new)
+        message.append('old phone: '+old[i]+' is changed into: '+ new[i])
+        i = i+1
+    return message
 
 
 
 
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
-updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case1.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
+#updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
 
 #executionPlan('./application/resources/CAN.xlsx',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
 #print(getTestCases('./resources/CAN.xlsx'))
