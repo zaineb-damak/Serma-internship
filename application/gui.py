@@ -20,13 +20,8 @@ appWidth, appHeight = 600, 700
 
 
 def browseFiles():
-        
-        filename = filedialog.askopenfilename(initialdir = "/",
-                                        title = "Select a File",
-                                        filetypes = (("Excel files",
-                                                    "*.xlsx*"),
-                                                    ))
-        return filename
+    filename = filedialog.askopenfilename(initialdir = "/",title = "Select a File",filetypes = (("Excel files","*.xlsx*"),))
+    return filename
 
 def choose_directory():
     global directory
@@ -36,9 +31,6 @@ def choose_directory():
 
     changeButton2 = ctk.CTkButton(master=root,text="Change execution plan",command=executionPlanArg)
     changeButton2.grid(row=6, column=0,columnspan=2, padx=20,pady=20, sticky="ew")
-
-
-
 
 def message():
      global pop
@@ -52,16 +44,6 @@ def message():
      ok = ctk.CTkButton(pop_frame, text="ok", command=pop.destroy)
      ok.grid(row=2,column=0)
      
-# def display_text():
-#    global entry
-#    global string
-#    string= entry.get()
-
-# def get_user_input():
-#     global user_input
-#     user_input = filedialog.askdirectory()
-#     return user_input
-   
     
 def updateTestCaseArg():
     file = browseFiles()
@@ -73,7 +55,11 @@ def executionPlanArg():
     executionPlan(file,"List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device",directory)    
     message()
 
-
+def getNewAndOld():
+    for ele in corresponding_phone:
+        old = ele[0]
+        new = ele[1]
+        print(old, new)
 
 root = ctk.CTk()
 
@@ -85,11 +71,6 @@ Label1.grid(row=0, column=0,padx=20, pady=20,sticky="ew")
 changeButton1 = ctk.CTkButton(master=root,text="Choose directory to save updated file",command=choose_directory)
 changeButton1.grid(row=4, column=0,columnspan=2, padx=20,pady=20, sticky="ew")
 
-
-
-# entry= Entry(root, width= 300)
-# entry.focus_set()
-# entry.grid(row=7, column=0,columnspan=2, padx=20,pady=20, sticky="ew")
 
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
