@@ -1,0 +1,42 @@
+[
+
+{
+	"DeviceName": "S8TCR",
+	"DeviceID": "R58N91KCNYY",
+	"TelNumb":"0786286166",
+	"GSNumber": "0"
+	},
+
+{
+	"DeviceName": "S7TCR",
+	"DeviceID": "R58M36NV1GD",
+	"TelNumb":"",
+	"GSNumber": "1"
+	},
+
+{
+	"DeviceName": "A12TCR",
+	"DeviceID": "R59RA00NL7D",
+	"TelNumb":"",
+	"GSNumber": "2"
+	},
+
+{
+	"DeviceName": "LMG9TCR",
+	"DeviceID": "LMG900EMf7a2d5d5",
+	"TelNumb":"",
+	"GSNumber": "3"
+	},
+{
+	"DeviceName": "S10PlusTCR",
+	"DeviceID": "215cf1f7",
+	"TelNumb":"",
+	"GSNumber": "6"
+	},
+{
+	"DeviceName": "S10TCR",
+	"DeviceID": "43GHT6dr85A",
+	"TelNumb":"",
+	"GSNumber": "7"
+	}
+]

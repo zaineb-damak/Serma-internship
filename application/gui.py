@@ -15,7 +15,7 @@ ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("green")   
  
 # Dimensions of the window
-appWidth, appHeight = 600, 700
+appWidth, appHeight = 800, 900
 
 
 def browseFiles():
@@ -85,7 +85,7 @@ def executionPlanArg():
     file = browseFiles()
     messagePath()
     
-
+#test case
 def getNewAndOld1():
     global pop
     pop = Toplevel(root)
@@ -136,6 +136,19 @@ def getNewAndOld2():
     # Add "OK" button to close the pop-up
     ok = ctk.CTkButton(master=pop_frame, text="OK", command=pop.destroy)
     ok.grid(row=len(changes), column=0, padx=5, pady=5)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 root = ctk.CTk()
 

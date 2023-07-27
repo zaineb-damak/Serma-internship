@@ -6,7 +6,7 @@ from Connected_Devices import *
 
 #returns global station number corresponding to the given device id
 def getGSNumber(phone_id):
-    f = open('./application/resources/GlobalStation.json')
+    f = open('./application/GlobalStation.json')
     data = json.load(f)
     for i in data:
          if(i['DeviceID'] == phone_id):
@@ -16,7 +16,7 @@ def getGSNumber(phone_id):
 
 #returns global station number corresponding to the given device name
 def getGSNumberByName(phone_name):
-    f = open('./application/resources/GlobalStation.json')
+    f = open('./application/GlobalStation.json')
     data = json.load(f)
     for i in data:
         if(i['DeviceName'] == phone_name):
@@ -25,7 +25,7 @@ def getGSNumberByName(phone_name):
 
 #returns global station device name corresponding to the given device id
 def getGSNameById(phone_id):
-    f = open('./application/resources/GlobalStation.json')
+    f = open('./application/GlobalStation.json')
     data = json.load(f)
     for i in data:
             if(i['DeviceID'] == phone_id):
@@ -33,7 +33,7 @@ def getGSNameById(phone_id):
     return('wrong id')
 
 def getGSNameByNumber(phone_number):
-    f = open('./application/resources/GlobalStation.json')
+    f = open('./application/GlobalStation.json')
     data = json.load(f)
     for i in data:
             if(int(i['GSNumber']) == phone_number):
@@ -42,7 +42,7 @@ def getGSNameByNumber(phone_number):
 
 #returns a list of device names in global station 
 def deviceNames():
-    f = open('./application/resources/GlobalStation.json')
+    f = open('./application/GlobalStation.json')
     data = json.load(f)
     names=[]
     for i in data:
@@ -132,7 +132,6 @@ def updateTestCase(file_path, IDList, new_file, save_file):
                 df.loc[index,'Action Field 3']  = row['Action Field 3']
                 id_list.pop(0)
 
-        #print(row['Action Field 3'])
     
    
     #saving the changes in a new excel file
@@ -168,7 +167,6 @@ def executionPlan(execution_plan_file_path, test_case_path,idList, save_file):
             pass
         except FileNotFoundError:
             pass
-    print(getChangesExecutionPlan())
 
 def getChangesTestCase():
     global message
@@ -194,14 +192,11 @@ def getChangesExecutionPlan():
         j = j+1
         message.append('test case: '+str(j))
         for ele in l:
-            print(i)
             old.append(getGSNameByNumber(ele[0])) 
             new.append(getGSNameByNumber(ele[1]))
-            
             message.append('old phone: '+old[i]+' is changed into: '+ new[i])
             i = i+1
     return message
-
 
 
 
