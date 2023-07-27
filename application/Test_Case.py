@@ -208,7 +208,7 @@ def getChangesExecutionPlan():
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
 #updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
-executionPlan('./application/resources/CAN.xlsx','./application/resources/',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
+#executionPlan('./application/resources/CAN.xlsx','./application/resources/',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
 #print(message)
 #print(getTestCases('./resources/CAN.xlsx'))
 
