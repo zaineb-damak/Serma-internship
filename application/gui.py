@@ -37,9 +37,9 @@ def choose_directory2():
     directory2 = filedialog.askdirectory()
     if directory2:
         executionPlan(file,directory2,"List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device",directory)    
-        messageUpdated()
+        messageUpdated2()
 
-def messageUpdated():
+def messageUpdated1():
      global pop
      pop = Toplevel(root)
      pop.title("message")
@@ -48,7 +48,19 @@ def messageUpdated():
      pop_frame.pack(pady=5)
      pop_label = ctk.CTkLabel(master=pop_frame,text="file updated successfully")
      pop_label.grid(row=1,column=0)
-     ok = ctk.CTkButton(pop_frame, text="see changes", command=getNewAndOld)
+     ok = ctk.CTkButton(pop_frame, text="see changes", command=getNewAndOld1)
+     ok.grid(row=2,column=0)
+
+def messageUpdated2():
+     global pop
+     pop = Toplevel(root)
+     pop.title("message")
+     pop.geometry("250x150")
+     pop_frame = Frame(pop)
+     pop_frame.pack(pady=5)
+     pop_label = ctk.CTkLabel(master=pop_frame,text="file updated successfully")
+     pop_label.grid(row=1,column=0)
+     ok = ctk.CTkButton(pop_frame, text="see changes", command=getNewAndOld2)
      ok.grid(row=2,column=0)
 
 def messagePath():
@@ -67,7 +79,7 @@ def updateTestCaseArg():
     user_input = simpledialog.askstring("Input", "Enter the name of the updated file")
     file = browseFiles()
     updateTestCase(file,"List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device",user_input,directory)
-    messageUpdated()
+    messageUpdated1()
 
 def executionPlanArg():
     global file
@@ -75,14 +87,14 @@ def executionPlanArg():
     messagePath()
     
 
-def getNewAndOld():
+def getNewAndOld1():
     global pop
     pop = Toplevel(root)
     pop.title("message")
     pop.geometry("500x350")
     pop_frame = Frame(pop)
     pop_frame.pack(pady=5)
-    changes = getChanges()
+    changes = getChangesTestCase()
      
     for i, change in enumerate(changes):
         pop_label = ctk.CTkLabel(master=pop_frame, text=change)
@@ -91,6 +103,21 @@ def getNewAndOld():
     ok = ctk.CTkButton(pop_frame, text="ok", command=pop.destroy)
     ok.grid(row=6,column=0)
      
+def getNewAndOld2():
+    global pop
+    pop = Toplevel(root)
+    pop.title("message")
+    pop.geometry("500x350")
+    pop_frame = Frame(pop)
+    pop_frame.pack(pady=5)
+    changes = getChangesExecutionPlan()
+     
+    for i, change in enumerate(changes):
+        pop_label = ctk.CTkLabel(master=pop_frame, text=change)
+        pop_label.grid(row=i, column=0, padx=5, pady=5)
+    
+    ok = ctk.CTkButton(pop_frame, text="ok", command=pop.destroy)
+    ok.grid(row=6,column=0)
 
 root = ctk.CTk()
 

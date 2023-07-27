@@ -133,7 +133,7 @@ def updateTestCase(file_path, IDList, new_file, save_file):
                 id_list.pop(0)
 
         #print(row['Action Field 3'])
-    print(getChanges())
+    
    
     #saving the changes in a new excel file
     wb = load_workbook(file_path)
@@ -152,7 +152,8 @@ def getTestCases(execution_plan_file_path):
 
 #updates the test cases present in the execution plan
 def executionPlan(execution_plan_file_path, test_case_path,idList, save_file):
-    print(execution_plan_file_path)
+    global newList
+    newList=[]
     testcases = []
     testcases = getTestCases(execution_plan_file_path)
     i = 0
@@ -163,11 +164,13 @@ def executionPlan(execution_plan_file_path, test_case_path,idList, save_file):
             testName[i] = os.path.splitext(test)[0]
             updateTestCase(test_case_path+'/'+test, idList,testName[i]+'_updated', save_file )
             i = i+1
+            newList.append(corresponding_phone)
             pass
         except FileNotFoundError:
             pass
+    print(getChangesExecutionPlan())
 
-def getChanges():
+def getChangesTestCase():
     global message
     old=[]
     new=[]
@@ -179,6 +182,25 @@ def getChanges():
         message.append('old phone: '+old[i]+' is changed into: '+ new[i])
         i = i+1
     return message
+    
+def getChangesExecutionPlan():
+    global message
+    old=[]
+    new=[]
+    message=[]
+    i = 0
+    j = 0
+    for l in newList:
+        j = j+1
+        message.append('test case: '+str(j))
+        for ele in l:
+            print(i)
+            old.append(getGSNameByNumber(ele[0])) 
+            new.append(getGSNameByNumber(ele[1]))
+            
+            message.append('old phone: '+old[i]+' is changed into: '+ new[i])
+            i = i+1
+    return message
 
 
 
@@ -186,7 +208,8 @@ def getChanges():
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
 #updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
-#executionPlan('./application/resources/CAN.xlsx',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
+executionPlan('./application/resources/CAN.xlsx','./application/resources/',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
+#print(message)
 #print(getTestCases('./resources/CAN.xlsx'))
 
 
