@@ -52,25 +52,52 @@ def deviceNames():
 #saves the changes in a new excel file
 def newExcel(wb, row, column, data, new_file, save_path):
     ws = wb.active
-    ws.cell(row=row, column=column+1).value = data
+    ws.cell(row=row, column=column).value = data
     wb.save(filename = save_path+'/'+new_file +'.xlsx')
+
+def getHeader(file_path):
+    df = pd.read_excel(file_path)
+    header = "STEP"
+    for index, row in df.iterrows():
+        for name in enumerate(row):
+            if pd.notna(name) and header in name:
+                return index+1
+
+def getColumn(columns, column_name):
+     for column in range (0,len(columns)):
+        if columns[column] == column_name:
+            return column+1
+
+def chengeDeviceName(df, row, index, excel_row,id_list):
+    names = deviceNames()
+    if str(row['Action Field 3']).replace('"','') in  names:
+        excel_row.append(index+58)
+        old = getGSNumberByName(str(row['Action Field 3']).replace('"',''))
+        exists = False
+        for z in range(0,len(corresponding_phone)):
+            if (int(old) == corresponding_phone[z][0]):
+                exists = True
+                l = z
+                break
+        if exists == True:
+            row['Action Field 3'] = corresponding_phone[l][2]
+            df.loc[index,'Action Field 3']  = row['Action Field 3']
+        if exists == False:
+            corresponding_phone.append([int(old),int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
+            row['Action Field 3'] = getGSNameById(id_list[0])
+            df.loc[index,'Action Field 3']  = row['Action Field 3']
+            id_list.pop(0)  
 
 def updateTestCase(file_path, IDList, new_file, save_file):
     global corresponding_phone
+    global excel_row
     #create a new dataframe
-    df = pd.read_excel(file_path, header=56)
+    df = pd.read_excel(file_path, header=getHeader(file_path))
     #empty list linking the old phone number to the new phone number
     corresponding_phone = []
     #initiating variables which will be later used in newExcel
     excel_row = []
-    columns = df.columns
-    column = 0
     id_list = idList(IDList)
-    #get the number of the column ['Action Field 3] in which changes will be made
-    for k in range (0,len(columns)):
-        if columns[k] == 'Action Field 3':
-            column = k
-            break
     #changing column action field into string
     df['Action Field 1 ( Tag Name/Request Name/ Picture Name)'] = df['Action Field 1 ( Tag Name/Request Name/ Picture Name)'].astype(str)
     #iterating through each row 
@@ -112,32 +139,12 @@ def updateTestCase(file_path, IDList, new_file, save_file):
                     id_list.pop(0)
         
         #changing the names of the devices
-        names = deviceNames()
-
-        if str(row['Action Field 3']).replace('"','') in  names:
-            excel_row.append(index+58)
-            old = getGSNumberByName(str(row['Action Field 3']).replace('"',''))
-            exists = False
-            for z in range(0,len(corresponding_phone)):
-                if (int(old) == corresponding_phone[z][0]):
-                    exists = True
-                    l = z
-                    break
-            if exists == True:
-                row['Action Field 3'] = corresponding_phone[l][2]
-                df.loc[index,'Action Field 3']  = row['Action Field 3']
-            if exists == False:
-                corresponding_phone.append([int(old),int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
-                row['Action Field 3'] = getGSNameById(id_list[0])
-                df.loc[index,'Action Field 3']  = row['Action Field 3']
-                id_list.pop(0)
-
-    
-   
+        chengeDeviceName(df, row, index, excel_row,id_list)
+       
     #saving the changes in a new excel file
     wb = load_workbook(file_path)
     for j in range (0,len(excel_row)):
-        newExcel(wb, excel_row[j] ,column,df.loc[excel_row[j]-58,'Action Field 3'], new_file, save_file)
+        newExcel(wb, excel_row[j] ,getColumn(df.columns, 'Action Field 3'),df.loc[excel_row[j]-58,'Action Field 3'], new_file, save_file)
 
 
 
@@ -202,7 +209,7 @@ def getChangesExecutionPlan():
 
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
-#updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
+updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
 #executionPlan('./application/resources/CAN.xlsx','./application/resources/',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
 #print(message)
 #print(getTestCases('./resources/CAN.xlsx'))
