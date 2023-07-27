@@ -1,8 +1,7 @@
 from tkinter import *
 import tkinter as tk
-from tkinter import simpledialog
+from tkinter import simpledialog,filedialog,Toplevel, Frame, Canvas, Scrollbar
 import customtkinter as ctk
-from tkinter import filedialog
 from Test_Case import *
 from Connected_Devices import *
 
@@ -61,7 +60,7 @@ def messageUpdated2():
      pop_label = ctk.CTkLabel(master=pop_frame,text="file updated successfully")
      pop_label.grid(row=1,column=0)
      ok = ctk.CTkButton(pop_frame, text="see changes", command=getNewAndOld2)
-     ok.grid(row=2,column=0)
+     ok.grid(row=20,column=0)
 
 def messagePath():
     pop = Toplevel(root)
@@ -106,18 +105,37 @@ def getNewAndOld1():
 def getNewAndOld2():
     global pop
     pop = Toplevel(root)
-    pop.title("message")
+    pop.title("Message")
     pop.geometry("500x350")
-    pop_frame = Frame(pop)
-    pop_frame.pack(pady=5)
+
+    # Create a canvas inside the pop-up window
+    canvas = Canvas(pop)
+    canvas.pack(side="left", fill="both", expand=True)
+    
+    # Add a frame inside the canvas to hold the content
+    pop_frame = Frame(canvas)
+    canvas.create_window((0, 0), window=pop_frame, anchor="nw")
+
+    # Create a vertical scrollbar
+    scrollbar = Scrollbar(pop, command=canvas.yview)
+    scrollbar.pack(side="right", fill="y")
+
+    # Configure the canvas to work with the scrollbar
+    canvas.config(yscrollcommand=scrollbar.set)
+
+    # Add the content to the frame (your existing code)
     changes = getChangesExecutionPlan()
-     
     for i, change in enumerate(changes):
         pop_label = ctk.CTkLabel(master=pop_frame, text=change)
         pop_label.grid(row=i, column=0, padx=5, pady=5)
-    
-    ok = ctk.CTkButton(pop_frame, text="ok", command=pop.destroy)
-    ok.grid(row=6,column=0)
+
+    # Update the canvas scrolling region when the frame changes size
+    pop_frame.update_idletasks()
+    canvas.config(scrollregion=canvas.bbox("all"))
+
+    # Add "OK" button to close the pop-up
+    ok = ctk.CTkButton(master=pop_frame, text="OK", command=pop.destroy)
+    ok.grid(row=len(changes), column=0, padx=5, pady=5)
 
 root = ctk.CTk()
 
@@ -128,6 +146,7 @@ Label1.grid(row=0, column=0,padx=20, pady=20,sticky="ew")
 
 changeButton1 = ctk.CTkButton(master=root,text="Choose directory to save updated file",command=choose_directory)
 changeButton1.grid(row=4, column=0,columnspan=2, padx=20,pady=20, sticky="ew")
+
 
 
 root.grid_rowconfigure(0, weight=1)
