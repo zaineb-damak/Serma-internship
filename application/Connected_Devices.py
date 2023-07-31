@@ -5,7 +5,10 @@ import subprocess
 #output = subprocess.check_output(adb_command, shell=True)
 #output_str = output.decode('utf-8')
 
-   
+
+
+#returns a list of id od the connected devices
+#takes as parameter: string which is the return of the 'adb devices' command
 def idList(str):
     id_list = []
     words = str.split()
@@ -16,6 +19,5 @@ def idList(str):
     id_list.pop(0)
     return id_list
 
-#print(idList("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device 0786286166 device"))
 
 
