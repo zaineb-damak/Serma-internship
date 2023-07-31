@@ -7,7 +7,8 @@ from Connected_Devices import *
 #returns global station number corresponding to the given device id
 #takes as parameter: phone id
 def getGSNumber(phone_id):
-    f = open('./application/GlobalStation.json')
+    fpath=os.path.abspath("GlobalStation.json")
+    f = open(fpath)
     data = json.load(f)
     for i in data:
          if(i['DeviceID'] == phone_id):
@@ -18,7 +19,8 @@ def getGSNumber(phone_id):
 #returns global station number corresponding to the given device name
 #takes as parameter: phone name
 def getGSNumberByName(phone_name):
-    f = open('./application/GlobalStation.json')
+    fpath=os.path.abspath("GlobalStation.json")
+    f = open(fpath)
     data = json.load(f)
     for i in data:
         if(i['DeviceName'] == phone_name):
@@ -28,7 +30,8 @@ def getGSNumberByName(phone_name):
 #returns global station device name corresponding to the given device id
 #takes as parameter: phone id
 def getGSNameById(phone_id):
-    f = open('./application/GlobalStation.json')
+    fpath=os.path.abspath("GlobalStation.json")
+    f = open(fpath)
     data = json.load(f)
     for i in data:
             if(i['DeviceID'] == phone_id):
@@ -38,7 +41,8 @@ def getGSNameById(phone_id):
 #returns global station device name corresponding to the given gsNumber
 ##takes as parameter: globale station phone number
 def getGSNameByNumber(phone_number):
-    f = open('./application/GlobalStation.json')
+    fpath=os.path.abspath("GlobalStation.json")
+    f = open(fpath)
     data = json.load(f)
     for i in data:
             if(int(i['GSNumber']) == phone_number):
@@ -47,7 +51,8 @@ def getGSNameByNumber(phone_number):
 
 #returns a list of device names in global station 
 def deviceNames():
-    f = open('./application/GlobalStation.json')
+    fpath=os.path.abspath("GlobalStation.json")
+    f = open(fpath)
     data = json.load(f)
     names=[]
     for i in data:
