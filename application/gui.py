@@ -1,5 +1,4 @@
 from tkinter import *
-import tkinter as tk
 from tkinter import simpledialog,filedialog,Toplevel, Frame, Canvas, Scrollbar
 import customtkinter as ctk
 from Test_Case import *
