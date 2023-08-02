@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 import json
 from openpyxl import load_workbook
@@ -82,7 +83,7 @@ def getHeader(file_path):
                 # we add 1 because dataframe considers the first line in an excel file as a header and not as a line in the dataframe
                 return index+1
 
-#returns the number of the column corresponding to the given name of the column
+#returns the number of the column corresponding to the given name of the column; will be used when saving the changes in a new file
 #takes as parameters: list of columns in the dataframe and name of the column
 def getColumn(columns, column_name):
      for column in range (0,len(columns)):
@@ -107,32 +108,75 @@ def changeActionField(df,list,row,index):
 #                    index: index in the for loop  
 #                    excel_row: the list of the rows that will be modified in the excel file
 #                    id_list: list of id of connected devices
-def chengeDeviceName(file_path,df, row, index, excel_row,id_list):
+# def changeDeviceName(file_path,df, row, index, excel_row,id_list):
+#     #store the list of device names in variable
+#     names = deviceNames()
+#     #check if the phone's name is in the names list
+#     if str(row['Action Field 3']).replace('"','') in  names:
+#         #add the row number to the list of excel rows that will be modified
+#         #we add 2 because there's a difference of 2 lines between the dataframe and excel file
+#         excel_row.append(index+getHeader(file_path)+2)
+#         #store the old phone name in variable old
+#         #old = getGSNumberByName(str(row['Action Field 3']).replace('"',''))
+#         cell_content = str(row['Action Field 3']).replace('"', '').split()
+#         #initialize variable exists. if old is in corresponding_phone, exists is true, otherwise, exists is false
+#         #this is in case the first time a phone appears in the excel file by name and not by the gsNumber
+#         exists = False
+#         #check if old is in correspondingy_phone
+#         for i in range(0,len(corresponding_phone)):
+#             if (int(old) == corresponding_phone[i][0]):
+#                 exists = True
+#                 break
+#         if exists == True:
+#             row['Action Field 3'] = corresponding_phone[i][2]
+#             df.loc[index,'Action Field 3']  = row['Action Field 3']
+#         if exists == False:
+#             corresponding_phone.append([int(old),int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
+#             row['Action Field 3'] = getGSNameById(id_list[0])
+#             df.loc[index,'Action Field 3']  = row['Action Field 3']
+#             id_list.pop(0)  
+
+
+def changeDeviceName(file_path,df, row, index, excel_row,id_list):
     #store the list of device names in variable
     names = deviceNames()
+    cell_content = re.split('[";]', str(row['Action Field 3']))
+    phones=[]
+    placement=[]
+    i = 0
+    #print(cell_content)
     #check if the phone's name is in the names list
-    if str(row['Action Field 3']).replace('"','') in  names:
-        #add the row number to the list of excel rows that will be modified
-        #we add 2 because there's a difference of 2 lines between the dataframe and excel file
-        excel_row.append(index+getHeader(file_path)+2)
-        #store the old phone name in variable old
-        old = getGSNumberByName(str(row['Action Field 3']).replace('"',''))
-        #initialize variable exists. if old is in corresponding_phone, exists is true, otherwise, exists is false
-        #this is in case the first time a phone appears in the excel file by name and not by the gsNumber
+    for content in cell_content:
+        if content in  names:
+            print('true')
+            #add the row number to the list of excel rows that will be modified
+            #we add 2 because there's a difference of 2 lines between the dataframe and excel file
+            excel_row.append(index+getHeader(file_path)+2)
+            phones.append(content)
+            placement.append(i)
+    
+        i = i+1
         exists = False
-        #check if old is in correspondingy_phone
-        for i in range(0,len(corresponding_phone)):
-            if (int(old) == corresponding_phone[i][0]):
-                exists = True
-                break
-        if exists == True:
-            row['Action Field 3'] = corresponding_phone[i][2]
-            df.loc[index,'Action Field 3']  = row['Action Field 3']
+    if len(phones)>0:
+        for k in range(0,len(phones)):
+            for j in range(0,len(corresponding_phone)):
+                    id = int((getGSNumberByName(phones[k])))
+                    position = placement[k]
+                    if id == corresponding_phone[j][0]:
+                        exists = True
+                        print('if')
+                        cell_content[position] = corresponding_phone[j][2]
+                        
         if exists == False:
-            corresponding_phone.append([int(old),int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
-            row['Action Field 3'] = getGSNameById(id_list[0])
-            df.loc[index,'Action Field 3']  = row['Action Field 3']
+            print('else')
+            old = int(getGSNumberByName(phones[k]))
+            corresponding_phone.append([old,int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
+            cell_content[position] = getGSNameById(id_list[0])
             id_list.pop(0)  
+    new_content ='"'.join(cell_content)
+    print(new_content)
+    row['Action Field 3'] = new_content
+    df.loc[index,'Action Field 3'] = row['Action Field 3']
 
 #all modification will be made by this function
 #takes as parameter: file_path: path of the excel file
@@ -184,7 +228,7 @@ def updateTestCase(file_path, connectedID, new_file, save_file):
                     changeActionField(df,id_list,row,index)
         
         #changing the names of the devices
-        chengeDeviceName(file_path,df, row, index, excel_row,id_list)
+        changeDeviceName(file_path,df, row, index, excel_row,id_list)
        
     #saving the changes in a new excel file
     wb = load_workbook(file_path)
@@ -260,7 +304,7 @@ def getChangesExecutionPlan():
 
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
-#updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case6.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
+updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case6.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
 #executionPlan('./application/resources/CAN.xlsx','./application/resources/',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
 #print(message)
 #print(getTestCases('./resources/CAN.xlsx'))
