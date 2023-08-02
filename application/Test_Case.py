@@ -108,73 +108,42 @@ def changeActionField(df,list,row,index):
 #                    index: index in the for loop  
 #                    excel_row: the list of the rows that will be modified in the excel file
 #                    id_list: list of id of connected devices
-# def changeDeviceName(file_path,df, row, index, excel_row,id_list):
-#     #store the list of device names in variable
-#     names = deviceNames()
-#     #check if the phone's name is in the names list
-#     if str(row['Action Field 3']).replace('"','') in  names:
-#         #add the row number to the list of excel rows that will be modified
-#         #we add 2 because there's a difference of 2 lines between the dataframe and excel file
-#         excel_row.append(index+getHeader(file_path)+2)
-#         #store the old phone name in variable old
-#         #old = getGSNumberByName(str(row['Action Field 3']).replace('"',''))
-#         cell_content = str(row['Action Field 3']).replace('"', '').split()
-#         #initialize variable exists. if old is in corresponding_phone, exists is true, otherwise, exists is false
-#         #this is in case the first time a phone appears in the excel file by name and not by the gsNumber
-#         exists = False
-#         #check if old is in correspondingy_phone
-#         for i in range(0,len(corresponding_phone)):
-#             if (int(old) == corresponding_phone[i][0]):
-#                 exists = True
-#                 break
-#         if exists == True:
-#             row['Action Field 3'] = corresponding_phone[i][2]
-#             df.loc[index,'Action Field 3']  = row['Action Field 3']
-#         if exists == False:
-#             corresponding_phone.append([int(old),int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
-#             row['Action Field 3'] = getGSNameById(id_list[0])
-#             df.loc[index,'Action Field 3']  = row['Action Field 3']
-#             id_list.pop(0)  
-
-
 def changeDeviceName(file_path,df, row, index, excel_row,id_list):
     #store the list of device names in variable
     names = deviceNames()
+    #split the content of the cell using the characters '"' and ';'
     cell_content = re.split('[";]', str(row['Action Field 3']))
+    #intitialize list which stores the phones that appear in the cell(in case there are multiple devices)
     phones=[]
+    #initialize list which stores the position of the phone in the cell_content list
     placement=[]
-    i = 0
-    #print(cell_content)
     #check if the phone's name is in the names list
-    for content in cell_content:
-        if content in  names:
-            print('true')
+    for i in range(0,len(cell_content)):
+        if cell_content[i] in  names:
             #add the row number to the list of excel rows that will be modified
             #we add 2 because there's a difference of 2 lines between the dataframe and excel file
             excel_row.append(index+getHeader(file_path)+2)
-            phones.append(content)
+            phones.append(cell_content[i])
             placement.append(i)
     
-        i = i+1
-        exists = False
+    #initialize variable exists. if phone is in corresponding_phone, exists is true, otherwise, exists is false
+    #this is in case the first time a phone appears in the excel file by name and not by the gsNumber
+    exists = False
+    #we iterate through the phones in the list and check if it exists in correpsonding_phone
     if len(phones)>0:
         for k in range(0,len(phones)):
             for j in range(0,len(corresponding_phone)):
-                    id = int((getGSNumberByName(phones[k])))
-                    position = placement[k]
-                    if id == corresponding_phone[j][0]:
+                    
+                    if int((getGSNumberByName(phones[k]))) == corresponding_phone[j][0]:
                         exists = True
-                        print('if')
-                        cell_content[position] = corresponding_phone[j][2]
+                        cell_content[placement[k]] = corresponding_phone[j][2]
                         
         if exists == False:
-            print('else')
-            old = int(getGSNumberByName(phones[k]))
-            corresponding_phone.append([old,int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
-            cell_content[position] = getGSNameById(id_list[0])
+            corresponding_phone.append([int(getGSNumberByName(phones[k])),int(getGSNumber(id_list[0])),getGSNameById(id_list[0])])
+            cell_content[placement[k]] = getGSNameById(id_list[0])
             id_list.pop(0)  
+    #save the changes made
     new_content ='"'.join(cell_content)
-    print(new_content)
     row['Action Field 3'] = new_content
     df.loc[index,'Action Field 3'] = row['Action Field 3']
 
@@ -304,7 +273,7 @@ def getChangesExecutionPlan():
 
 
 listID=("List of devices attached R59RA00NL7D device LMG900EMf7a2d5d5 device R58M36NV1GD device R58N91KCNYY device 215cf1f7 device")
-updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case6.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
+#updateTestCase('E:/stage SERMA summer 2023/application/resources/test_case3.xlsx',listID,'sample','E:/stage SERMA summer 2023/Serma-internship/application')
 #executionPlan('./application/resources/CAN.xlsx','./application/resources/',listID,'E:/stage SERMA summer 2023/Serma-internship/application')
 #print(message)
 #print(getTestCases('./resources/CAN.xlsx'))
