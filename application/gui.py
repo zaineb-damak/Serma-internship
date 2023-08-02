@@ -36,6 +36,7 @@ def choose_directory():
 
 
 
+
 #####  test case #####
 
 # displays message after the changes are made
@@ -173,7 +174,8 @@ Label1.grid(row=0, column=0,padx=20, pady=20,sticky="ew")
 changeButton1 = ctk.CTkButton(master=root,text="Choose directory to save updated file",command=choose_directory)
 changeButton1.grid(row=4, column=0,columnspan=2, padx=20,pady=20, sticky="ew")
 
-
+Label1 = ctk.CTkLabel(master=root,text="SERMA International-2023")
+Label1.grid(row=10, column=0,padx=20, pady=20,sticky="ew")
 
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
